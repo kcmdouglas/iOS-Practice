@@ -13,14 +13,18 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
     @IBOutlet var appsTableView : UITableView!
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 10
+        return tableData.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = UITableViewCell(style: .subtitle, reuseIdentifier: "MyTestCell")
         
-        cell.textLabel?.text = "Row \(indexPath.row)"
-        cell.detailTextLabel?.text = "Subtitle \(indexPath.row)"
+        // Get the app from the list at this row's index
+        let app = tableData[indexPath.row]
+        
+        // Pull out the relevant strings in the app record
+        cell.textLabel?.text = app["appName"]
+        cell.detailTextLabel?.text = app["price"]
         
         return cell
     }
@@ -29,6 +33,7 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
+        searchItunes(searchTerm: "JQ Software")
     }
 
     override func didReceiveMemoryWarning() {
