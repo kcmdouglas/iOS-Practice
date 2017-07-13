@@ -8,8 +8,16 @@
 
 import UIKit
 
-class ViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
+class SearchResultsViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, APIControllerProtocol {
+    func didReceiveAPIResults(results: NSArray) {
+        DispatchQueue.main.async {
+            self.tableData = results as! [[String : String]]
+            self.appsTableView!.reloadData()
+        }
+    }
+    
     var tableData = [[String: String]]()
+    let api = APIController()
     @IBOutlet var appsTableView : UITableView!
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -33,7 +41,8 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
-        searchItunes(searchTerm: "JQ Software")
+        api.delegate = self
+        api.searchItunesFor(searchTerm: "JQ Software")
     }
 
     override func didReceiveMemoryWarning() {
